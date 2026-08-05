@@ -36,6 +36,14 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     /// </summary>
     public static Plugin? Instance { get; private set; }
 
+    /// <summary>
+    /// Near-miss fixture. InternalItemsQuery.UseRawName was added after the
+    /// declared floor and exists in the development version, so this compiles
+    /// against one and not the other.
+    /// </summary>
+    /// <returns>Nothing anybody uses.</returns>
+    public static bool? NearMiss() => new MediaBrowser.Controller.Entities.InternalItemsQuery { UseRawName = true }.UseRawName;
+
     /// <inheritdoc />
     public IEnumerable<PluginPageInfo> GetPages()
     {
