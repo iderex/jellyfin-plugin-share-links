@@ -11,7 +11,7 @@ version: "0.0.0.0"
 # number as well, so every API the plugin calls is proven to exist here too.
 targetAbi: "10.11.0.0"
 framework: "net9.0"
-owner: "iderex"
+owner: "Flowfin"
 # The sentence a user reads in the catalogue list before opening anything. It
 # names the one feature and says who a share is for, because the difference
 # between an invited guest and an anonymous public link is the whole posture and
