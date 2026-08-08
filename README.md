@@ -116,3 +116,5 @@ GPL-3.0. `LICENSE` is the authority.
 A Jellyfin plugin links against the server's GPLv3 packages when it is compiled,
 so the built plugin is GPLv3 whatever a source licence says. That is worth
 knowing before choosing a different one.
+
+See [NOTICE.md](NOTICE.md) for the intended-use notice.
