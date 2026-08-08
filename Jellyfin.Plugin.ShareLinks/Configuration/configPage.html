@@ -9,7 +9,14 @@
             <div data-role="content">
                 <div class="content-primary">
                     <h2>Share Links</h2>
-                    <p>This plugin has no settings yet.</p>
+                    <h3>Public base URL</h3>
+                    <p>
+                        The address this server is reached at from outside, with no trailing slash, for example
+                        <code>https://media.example.org</code>, or <code>https://example.org/jellyfin</code> when a proxy puts the server under a path. Every share link is built from it.
+                    </p>
+                    <p>While it is empty, the link is built from what the incoming request said the server was. That is a header, which is text whoever made the request wrote, so a request carrying a forged host produces a link pointing at somewhere else, which you then send to a guest. Set this value and the request is not consulted at all. Behind a reverse proxy it is the only reliable answer, because the address the proxy passes on is not the one the guest typed.</p>
+                    <p>A value that is not an absolute <code>http</code> or <code>https</code> address is refused when a link is built, and no link is produced. It does not fall back to the request, because a typo here would then quietly restore the behaviour this setting exists to remove.</p>
+                    <p>There is no control on this page yet. The setting lives in the plugin's configuration file, and the dashboard control that edits it arrives with the rest of the configuration surface.</p>
                 </div>
             </div>
         </div>

@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Serialization;
 using Jellyfin.Plugin.ShareLinks.Configuration;
 using Xunit;
 
@@ -19,16 +20,41 @@ public class PluginConfigurationTests
     private static readonly Assembly PluginAssembly = typeof(PluginConfiguration).Assembly;
 
     [Fact]
-    public void ConfigurationDeclaresNoProperty()
+    public void ConfigurationDeclaresOnlyTheSettingsThatHaveLanded()
     {
         // DeclaredOnly, because BasePluginConfiguration brings its own and those are
         // not this repository's to remove.
+        //
+        // The set is exact rather than a check that each template setting is absent.
+        // Naming the four would be a list to keep in step with a template this
+        // repository no longer follows; an exact set refuses them, refuses a fifth
+        // nobody meant to add, and makes the line somebody edits the line that says
+        // which settings exist.
         var declared = typeof(PluginConfiguration)
             .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly)
             .Select(property => property.Name)
+            .OrderBy(name => name, StringComparer.Ordinal)
             .ToArray();
 
-        Assert.Empty(declared);
+        Assert.Equal(["PublicBaseUrl"], declared);
+    }
+
+    [Fact]
+    public void TheBaseUrlSettingSurvivesTheSerialiserTheServerUses()
+    {
+        // The server writes this class out with XmlSerializer and reads it back on
+        // the next start, so a setting that does not round-trip is a setting an
+        // operator sets once and finds empty after a restart. share-store.md quotes
+        // the base class member that does it; this is the property that member needs
+        // to hold.
+        var serialiser = new XmlSerializer(typeof(PluginConfiguration));
+        var written = new StringWriter(CultureInfo.InvariantCulture);
+        serialiser.Serialize(written, new PluginConfiguration { PublicBaseUrl = "https://media.example.org" });
+
+        using var read = new StringReader(written.ToString());
+        var restored = Assert.IsType<PluginConfiguration>(serialiser.Deserialize(read));
+
+        Assert.Equal("https://media.example.org", restored.PublicBaseUrl);
     }
 
     [Fact]
