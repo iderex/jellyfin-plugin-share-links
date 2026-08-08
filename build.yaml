@@ -1,6 +1,7 @@
 ---
 name: "Share Links"
 guid: "a3703f07-f83d-49a0-a09f-50b890a2baac"
+imageUrl: "https://raw.githubusercontent.com/Flowfin/jellyfin-plugin-share-links/master/img/logo.png"
 # 0.0.0.0 is reserved and no release carries it, so a package built from the tree
 # without a version on the command line is recognisable as one that did not come
 # from the release process. docs/versioning.md is where that is argued, and
